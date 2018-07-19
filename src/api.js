@@ -17,9 +17,9 @@ let base = rebase.createClass(db);
 const Api = {
 /**
  * One way data binding from Firebase to a component's state.
- * @param {string} endpoint
- * @param {object} options
- * @return {Promise} A firebase object which resolves when the write is complete and rejects
+//  * @param {string} endpoint
+//  * @param {object} options
+//  * @return {Promise} A firebase object which resolves when the write is complete and rejects
  * if there is an error
  */
 

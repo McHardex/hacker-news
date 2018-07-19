@@ -1,14 +1,96 @@
-// import React from 'react';
+import React, { Component } from 'react';
+import Api from '../api';
+import InfiniteScroll from 'react-infinite-scroll-component';
+import loading from'../images/loading.gif'
 
-// const HackerNewsContent = () => {
-//   return(
-//     {
-      
-//     }
-//     <div>
-//       <a></a>
-//     </div>
-//   );
-// }
+const style = {
+  width: '50px',
+}
+class HackerNewsContent extends Component {
+    state = {
+      hackerNews: [],
+      pageNews: [],
+      endAt: 15,
+      hasMore: true,
+    };
 
-// export default HackerNewsContent;
+  componentDidMount(){
+    Api.fetch(`/newstories`, {})
+    .then(responses => { this.fetchNewStories(responses) })
+  }
+
+  
+  fetchNewStories = (storyIds) => {
+    let actions = storyIds.map(this.fetchSingleStory);
+    let results = Promise.all(actions);
+    results.then(data => this.setState({
+      hackerNews : data,
+      pageNews: data.slice(0, this.state.endAt),
+    }))
+  }
+
+  // fetching the ids
+  fetchSingleStory = (id, index) => {
+    const rank = index + 1;
+    return new Promise(resolve => {
+      Api.fetch(`/item/${id}`, {
+        then(data) {
+          let item = data;
+          // adding the rank since it does not exist yet
+          item.rank = rank;
+          resolve(item);
+        }
+      });
+    });
+  }
+
+  // fetch more news content
+  fetchMore = () => {
+    const newEnd = this.state.endAt + 5;
+    const allNews = this.state.hackerNews.slice(0, newEnd);
+
+    if(allNews.length === this.state.hackerNews.length){
+      this.setState({hasMore: false})
+    }
+
+    setTimeout(() => {
+      this.setState({
+        pageNews: allNews, endAt: newEnd,
+      })
+    }, 5000); 
+  }
+
+  render() {
+    return (
+        <InfiniteScroll
+          dataLength={this.state.pageNews.length}
+          next={this.fetchMore}
+          hasMore={this.state.hasMore}
+          loader={<img src={loading} style={style} alt='loading_image'/>}
+          endMessage={
+            <p style={{textAlign: 'center'}}>
+              <b>Yay! You have seen it all</b>
+            </p>
+          }
+        >
+        {
+          Object.keys(this.state.pageNews).map((newsContent, index)=> {
+            const newsObj = this.state.pageNews[newsContent];
+            const date = new Date(newsObj.time)
+
+            return ( <div key={index}  className='newsBody'>
+              <a href={newsObj.url || 'google.com'}>{newsObj.title}</a>
+              <div className='newsBy'>
+              <p className='author'>Author: {newsObj.by || 'anonymous'}</p>
+              <p className='time'>time: {date.toTimeString() || 'unknown'}</p>
+              </div>
+            </div>
+          )
+          })
+        }
+        </InfiniteScroll>
+    );
+  }
+}
+
+export default HackerNewsContent;
