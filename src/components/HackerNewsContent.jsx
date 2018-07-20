@@ -17,7 +17,7 @@ class HackerNewsContent extends Component {
     };
 
   componentDidMount(){
-    Api.fetch(`/beststories`, {})
+    Api.fetch(`/newstories`, {})
     .then(responses => { this.fetchNewStories(responses) })
   }
 
