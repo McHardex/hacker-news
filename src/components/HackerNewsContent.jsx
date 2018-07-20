@@ -70,7 +70,7 @@ class HackerNewsContent extends Component {
           hasMore={this.state.hasMore}
           loader={<img src={loading} style={style} alt='loading_image'/>}
           endMessage={
-            <p>
+            <p className='endMessage'>
               <b>Yay! You have seen it all</b>
             </p>
           }

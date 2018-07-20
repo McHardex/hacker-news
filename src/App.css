@@ -27,7 +27,7 @@ h1.title {
   font-size: 40px;
   padding: 6px 0;
   text-align: center;
-  color: #ffffff;
+  color: #fff;
 }
 
 .newsBody {
@@ -59,4 +59,8 @@ h1.title {
 span {
   font-weight: 900;
   color: #482323a8;
+}
+
+.endMessage {
+  text-align: center;
 }
