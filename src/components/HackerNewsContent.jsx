@@ -17,7 +17,7 @@ class HackerNewsContent extends Component {
     };
 
   componentDidMount(){
-    Api.fetch(`/newstories`, {})
+    Api.fetch(`/beststories`, {})
     .then(responses => { this.fetchNewStories(responses) })
   }
 
@@ -82,7 +82,7 @@ class HackerNewsContent extends Component {
 
             return ( 
             <div key={index} className='newsBody'>
-              <a href={newsObj.url || 'google.com'}>{newsObj.title}</a>
+              <a href={newsObj.url || 'google.com'} target="_blank">{newsObj.title}</a>
               <div className='newsBy'>
                 <div  className='author'>
                 <p><span>Author: </span>{newsObj.by || 'anonymous'}</p>
