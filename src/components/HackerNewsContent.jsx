@@ -5,6 +5,8 @@ import loading from'../images/loading.gif'
 
 const style = {
   width: '50px',
+  display: 'flex',
+  margin: '0 auto',
 }
 class HackerNewsContent extends Component {
     state = {
@@ -19,7 +21,7 @@ class HackerNewsContent extends Component {
     .then(responses => { this.fetchNewStories(responses) })
   }
 
-  
+
   fetchNewStories = (storyIds) => {
     let actions = storyIds.map(this.fetchSingleStory);
     let results = Promise.all(actions);
@@ -44,9 +46,9 @@ class HackerNewsContent extends Component {
     });
   }
 
-  // fetch more news content
+  // fetching more news content
   fetchMore = () => {
-    const newEnd = this.state.endAt + 5;
+    const newEnd = this.state.endAt + 10;
     const allNews = this.state.hackerNews.slice(0, newEnd);
 
     if(allNews.length === this.state.hackerNews.length){
@@ -57,7 +59,7 @@ class HackerNewsContent extends Component {
       this.setState({
         pageNews: allNews, endAt: newEnd,
       })
-    }, 5000); 
+    }, 2500); 
   }
 
   render() {
@@ -68,7 +70,7 @@ class HackerNewsContent extends Component {
           hasMore={this.state.hasMore}
           loader={<img src={loading} style={style} alt='loading_image'/>}
           endMessage={
-            <p style={{textAlign: 'center'}}>
+            <p>
               <b>Yay! You have seen it all</b>
             </p>
           }
@@ -78,11 +80,16 @@ class HackerNewsContent extends Component {
             const newsObj = this.state.pageNews[newsContent];
             const date = new Date(newsObj.time)
 
-            return ( <div key={index}  className='newsBody'>
+            return ( 
+            <div key={index} className='newsBody'>
               <a href={newsObj.url || 'google.com'}>{newsObj.title}</a>
               <div className='newsBy'>
-              <p className='author'>Author: {newsObj.by || 'anonymous'}</p>
-              <p className='time'>time: {date.toTimeString() || 'unknown'}</p>
+                <div  className='author'>
+                <p><span>Author: </span>{newsObj.by || 'anonymous'}</p>
+                </div>
+                <div  className='time'>
+                <p><span>Time: </span>{date.toTimeString() || 'unknown'}</p>
+                </div>
               </div>
             </div>
           )
