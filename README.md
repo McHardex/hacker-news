@@ -1,1 +1,1 @@
-[## click to view live demo](https://mchardex.github.io/hacker-news)
+## [click to view live demo](https://mchardex.github.io/hacker-news)
